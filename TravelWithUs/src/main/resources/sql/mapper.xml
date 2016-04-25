@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.travel.mapper.Mapper">
+	<resultMap type="net.travel.dto.Member" id="MemberResultMap">
+		<result property="num" column="num"/>
+		<result property="id" column="id"/>
+		<result property="pw" column="pw"/>
+		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>
+		<result property="email" column="email"/>
+		<result property="nation" column="nation"/>
+		<result property="mileage" column="mileage"/>
+	</resultMap>
+	
+	<resultMap type="net.travel.dto.Equipment" id="EquipmentMap">
+		<result property="num" column="num"/>
+		<result property="name" column="name"/>
+		<result property="price" column="price"/>
+		<result property="description" column="description"/>
+		<result property="s_imagepath" column="s_imagepath"/>
+		<result property="l_imagepath" column="l_imagepath"/>
+		<result property="stock" column="stock"/>
+		<result property="madeby" column="madeby"/>
+		<result property="hit" column="hit" />
+	</resultMap>
+	
+	<resultMap type="net.travel.dto.Travel" id="TravelMap">
+		<result property="num" column="num"/>
+		<result property="title" column="title"/>
+		<result property="price" column="price"/>
+		<result property="image" column="image"/>
+		<result property="description" column="description"/>
+		<result property="departure" column="departure"/>
+		<result property="travelpath" column="travelpath"/>
+		<result property="duration" column="duration"/>
+		<result property="latitude" column="latitude"/>
+		<result property="longitude" column="longitude"/>
+		<result property="hit" column="hit" />
+		<result property="l_image" column="l_image"/>
+	</resultMap>
+    
+    <resultMap type="net.travel.dto.Epilogue" id="EpMap">
+		<result property="num" column="num"/>
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="date" column="date"/>
+		<result property="description" column="description"/>
+		<result property="hit" column="hit"/>
+	</resultMap>
+    
+	<select id="InqueryID" parameterType="String" resultMap="MemberResultMap">
+		SELECT * FROM member WHERE id=#{id}
+	</select>
+	
+	<select id="InqueryPW" parameterType="HashMap" resultMap="MemberResultMap">
+		SELECT * FROM member WHERE id=#{id} and pw=#{pw}
+	</select>
+	
+	<select id="getUserName" parameterType="String" resultType="String">
+		SELECT name FROM member WHERE id=#{id}
+	</select>
+
+	<select id="InsertNewUser" parameterType="net.travel.dto.Member">
+		INSERT INTO member (id,pw,name,phone,email,nation) VALUES (#{id},#{pw},#{name},#{phone},#{email},#{nation})
+	</select>
+	
+	
+	
+	<select id="GetEquipList" resultMap="EquipmentMap">
+		SELECT * FROM equipment
+	</select>
+	
+	<select id="getTop3List" resultMap="EquipmentMap">
+		SELECT * FROM equipment ORDER BY hit DESC LIMIT 3
+	</select>
+	
+	<select id="GetEquipmentDetail" parameterType="int" resultMap="EquipmentMap">
+		SELECT * FROM equipment WHERE num=#{num}
+	</select>
+	
+	<select id="GetTravelList" resultMap="TravelMap">
+		SELECT * FROM travel
+	</select>
+	
+	<select id="GetTop8Travel" resultMap="TravelMap">
+		SELECT * FROM travel ORDER BY hit DESC LIMIT 8
+	</select>
+	
+	<select id="getTravel" parameterType="int" resultMap="TravelMap">
+		SELECT * FROM travel WHERE num=#{num}
+	</select>
+	
+	
+	<select id="getEpList" resultMap="EpMap">
+		SELECT * FROM epilogue
+	</select>
+	
+	<select id="getEp" parameterType="int" resultMap="EpMap">
+		SELECT * FROM epilogue WHERE num=#{num}
+	</select>
+	
+	<select id="updateHit" parameterType="int">
+		UPDATE epilogue
+		SET hit=hit+1
+		WHERE num=#{num}
+	</select>
+	
+</mapper>
